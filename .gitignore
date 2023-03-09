@@ -1,0 +1,6 @@
+# Text Files
+*.txt
+
+# Emacs Autosaves
+*~
+#*
