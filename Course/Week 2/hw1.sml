@@ -167,3 +167,119 @@ fun oldest(dates : (int * int * int) list) =
 		in
 			SOME(oldest_date(dates))
 		end
+
+			
+(* Challenge Exercises*)
+
+(* Exercise 12 - Rewrite number_in_months and date_in_months to effective remove duplicates months from list.*)
+
+(* Helper Function - Removes duplicated numbers from a list
+ *
+ * Return Type:
+ * fn : int list -> int list*)
+fun remove_duplicates(xs : int list) =
+
+	if null xs
+	then []
+	else
+		let
+			fun search_in_list(ys : int list, n : int) =
+
+				if null ys
+				then false
+				else
+					if hd ys = n
+					then true
+					else search_in_list(tl ys, n)
+
+			fun create_no_duplicate_list(ys : int list, result : int list) =
+
+				if null ys
+				then result
+				else
+					if search_in_list(result, hd ys)
+					then create_no_duplicate_list(tl ys, result)
+					else create_no_duplicate_list(tl ys, result @ [hd ys])
+
+		in
+			create_no_duplicate_list(xs, [])
+		end
+			
+(* Exercise 12.1 - Given a list of dates and a list of months, returns how many dates on the list are in the given months.
+ * 
+ * Return Type:
+ * fn : (int * int * int) list * int list -> int *)
+fun number_in_months_challenge(dates : (int * int * int) list, months : int list) =
+
+	if null months orelse null dates
+	then 0
+	else
+		let
+			fun without_duplicates(months_temp : int list) =
+
+				if null months_temp
+				then 0
+				else number_in_month(dates, hd months_temp) + without_duplicates(tl months_temp)
+		in
+			without_duplicates(remove_duplicates(months))
+		end
+																
+(* Exercise 12.2 - Takes a list of dates and a list of months, returns a list holding all dates that are in the given months.
+ *
+ * Return Type:
+ * fn : (int * int * int) list * int list -> (int * int * int) list *)
+fun dates_in_months_challenge(dates : (int * int * int) list, months : int list) =
+
+	if null dates orelse null months
+	then []
+	else
+		let
+			fun without_duplicates(months_temp : int list) =
+
+				if null months_temp
+				then []
+				else dates_in_month(dates, hd months_temp) @ without_duplicates(tl months_temp)
+		in
+			without_duplicates(remove_duplicates(months))
+		end
+
+(* Exercise 13 Helper Function - Converts a month and date format to only day format (1 - 365)
+ *
+ * Result Type:
+ * fn : int * int -> int*)
+fun convert_to_day(month : int, day : int) =
+	
+	let
+		val months = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+		
+		fun sum_list_until(months_temp : int list, stop_index : int) =
+
+			if stop_index = 1
+			then 0
+			else hd months_temp + sum_list_until(tl months_temp, stop_index - 1)
+
+	in
+		sum_list_until(months, month) + day
+	end
+		
+(* Exercise 13 - Takes a date as input and analyzes if it is a valid date
+ *
+ * Return Type:
+ * fn : (int * int * int) -> bool*)
+fun reasonable_date(date : (int * int * int)) =
+
+	if (#1 date <= 0) orelse (#2 date < 1) orelse (#2 date > 12) orelse (#3 date < 1) orelse (#3 date > 31)
+	then false
+	else
+		if #2 date <> 2
+		then
+			if what_month(convert_to_day(#2 date, #3 date)) <> #2 date
+			then false
+			else true
+		else
+			if (#3 date < 1) orelse (#3 date > 29)
+			then false
+			else
+				if #3 date <> 29
+				then true
+				else (#1 date mod 400 = 0) orelse ((#1 date mod 4 = 0) andalso (#1 date mod 100 <> 0))

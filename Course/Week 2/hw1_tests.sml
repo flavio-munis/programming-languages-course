@@ -93,16 +93,50 @@ val test11 = oldest([(2012,2,28),(2011,3,31),(2011,4,28)]) = SOME(2011,3,31);
 val test11_1 = oldest([(2012,2,28)]) = SOME(2012,2,28);
 val test11_2 = oldest([]) = NONE;
 
-(*val test12 = number_in_months_challenge([(2012,2,28),(2013,12,1),(2011,3,31),(2011,4,28)],[2,3,4]) = 3;*)
+val test_helper = remove_duplicates([1,2,3,4,5]) = [1,2,3,4,5];
+val test_helper_1 = remove_duplicates([1,2,2,3,4,5]) = [1,2,3,4,5];
+val test_helper_2 = remove_duplicates([1,2,2,2,2,2,2,3,4,5])  = [1,2,3,4,5];
+val test_helper_3 = remove_duplicates([1,2,3,4,2,5])  = [1,2,3,4,5];
+val test_helper_4 = remove_duplicates([1,1,2,2,3,3,4,4,5,5]) = [1,2,3,4,5];
+val test_helper_5 = remove_duplicates([1]) = [1];
+val test_helper_6 = remove_duplicates([]) = [];
 
-(*val test13 = dates_in_months_challenge([(2012,2,28),(2013,12,1),(2011,3,31),(2011,4,28)],[2,3,4]) = [(2012,2,28),(2011,3,31),(2011,4,28)]*)
+val test12 = number_in_months_challenge([(2012,2,28),(2013,12,1),(2011,3,31),(2011,4,28)],[2,3,4]) = 3;
+val test12_1 = number_in_months_challenge([(2012,2,28)],[2,3,4]) = 1;
+val test12_2 = number_in_months_challenge([(2012,2,28),(2013,12,1),(2011,3,31),(2011,2,28)],[2]) = 2;
+val test12_3 = number_in_months_challenge([(2012,7,28),(2013,12,1),(2011,6,31),(2011,5,28)],[2,3,4]) = 0;
+val test12_4 = number_in_months_challenge([],[2,3,4]) = 0;
+val test12_5 = number_in_months_challenge([(2012,7,28),(2013,12,1),(2011,6,31),(2011,5,28)],[]) = 0;
+val test12_6 = number_in_months_challenge([(2012,2,28),(2013,12,1),(2011,3,31),(2011,4,28)],[2,3,2,4]) = 3;
+val test12_7 = number_in_months_challenge([(2012,2,28)],[2,3,4]) = 1;
+val test12_8 = number_in_months_challenge([(2012,2,28),(2013,12,1),(2011,3,31),(2011,2,28)],[2,2,2,2]) = 2;
+val test12_9 = number_in_months_challenge([(2012,2,28),(2013,12,1),(2011,3,31),(2011,4,28)],[2,3,4,2,3,4]) = 3;
 
-(*val test14_1 = reasonable_date(2022, 5, 31) = true;*)
+val test13 = dates_in_months_challenge([(2012,2,28),(2013,12,1),(2011,3,31),(2011,4,28)],[2,3,4]) = [(2012,2,28),(2011,3,31),(2011,4,28)];
+val test13_1 = dates_in_months_challenge([(2012,2,28)],[2,3,4]) = [(2012,2,28)];
+val test13_2 = dates_in_months_challenge([(2012,2,28),(2013,12,1),(2011,3,31),(2011,2,28)],[2]) = [(2012,2,28),(2011,2,28)];
+val test13_3 = dates_in_months_challenge([(2012,7,28),(2013,12,1),(2011,6,31),(2011,5,28)],[2,3,4]) = [];
+val test13_4 = dates_in_months_challenge([],[2,3,4]) = [];
+val test13_5 = dates_in_months_challenge([(2012,7,28),(2013,12,1),(2011,6,31),(2011,5,28)],[]) = [];
+val test13_6 = dates_in_months_challenge([(2012,2,28),(2013,12,1),(2011,3,31),(2011,4,28)],[2,3,2,4]) =  [(2012,2,28),(2011,3,31),(2011,4,28)];
+val test13_7 = dates_in_months_challenge([(2012,2,28)],[2,3,4]) = [(2012,2,28)];
+val test13_8 = dates_in_months_challenge([(2012,2,28),(2013,12,1),(2011,3,31),(2011,2,28)],[2,2,2,2]) = [(2012,2,28),(2011,2,28)];
+val test13_9 = dates_in_months_challenge([(2012,2,28),(2013,12,1),(2011,3,31),(2011,4,28)],[2,3,4,2,3,4]) =  [(2012,2,28),(2011,3,31),(2011,4,28)];
 
-(*val test14_2 = reasonable_date(0, 4, 31) = false;*)
+val test_helper_13 = convert_to_day(1,1) = 1;
+val test_helper_13_1 = convert_to_day(1,31) = 31;
+val test_helper_13_2 = convert_to_day(2,1) = 32;
+val test_helper_13_3 = convert_to_day(2,28) = 59;
 
-(*val test14_3 = reasonable_date(1, 2, 3) = true;*)
-
-(*val test14_4 = reasonable_date(2022, 11, 31) = false;*)
-
-(*val test14_5 = reasonable_date(2022, 13, 3) = false;*)
+val test14 = reasonable_date(2023, 3, 15) = true;
+val test14_1 = reasonable_date(2022, 11, 31) = false;
+val test14_2 = reasonable_date(0, 4, 31) = false;
+val test14_3 = reasonable_date(1, 2, 3) = true;
+val test14_4 = reasonable_date(2023, 13, 31) = false;
+val test14_5 = reasonable_date(2022, 12, 32) = false;
+val test14_6 = reasonable_date(2022, 2, 32) = false;
+val test14_7 = reasonable_date(2022, 2, 30) = false;
+val test14_8 = reasonable_date(2022, 2, 29) = false;
+val test14_9 = reasonable_date(2020, 2, 29) = true;
+val test14_10 = reasonable_date(2000, 2, 29) = true;
+val test14_11 = reasonable_date(1900, 2, 29) = false;
