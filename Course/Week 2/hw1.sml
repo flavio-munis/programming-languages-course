@@ -213,16 +213,7 @@ fun number_in_months_challenge(dates : (int * int * int) list, months : int list
 
 	if null months orelse null dates
 	then 0
-	else
-		let
-			fun without_duplicates(months_temp : int list) =
-
-				if null months_temp
-				then 0
-				else number_in_month(dates, hd months_temp) + without_duplicates(tl months_temp)
-		in
-			without_duplicates(remove_duplicates(months))
-		end
+	else number_in_months(dates, remove_duplicates(months))
 																
 (* Exercise 12.2 - Takes a list of dates and a list of months, returns a list holding all dates that are in the given months.
  *
@@ -232,16 +223,7 @@ fun dates_in_months_challenge(dates : (int * int * int) list, months : int list)
 
 	if null dates orelse null months
 	then []
-	else
-		let
-			fun without_duplicates(months_temp : int list) =
-
-				if null months_temp
-				then []
-				else dates_in_month(dates, hd months_temp) @ without_duplicates(tl months_temp)
-		in
-			without_duplicates(remove_duplicates(months))
-		end
+	else dates_in_months(dates, remove_duplicates(months))
 
 (* Exercise 13 Helper Function - Converts a month and date format to only day format (1 - 365)
  *
