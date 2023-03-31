@@ -73,3 +73,10 @@ val test_zip_4 = zip([1],[2,3,4]) = [(1,2)];
 val test_zip_5 = zip([1,2,3],[4]) = [(1,4)];
 val test_zip_6 = zip([],[1,2]) = [];
 val test_zip_7 = zip([1,2,3],[]) = [];
+
+val test_zip_recycle_1 = zipRecycle([1,2,3], [1, 2, 3, 4, 5, 6, 7]) = [(1,1), (2,2), (3, 3), (1,4), (2,5), (3,6), (1,7)];
+val test_zip_recycle_2 = zipRecycle([1, 2, 3, 4, 5, 6, 7], [1,2,3]) = [(1,1),(2,2),(3,3),(4,1),(5,2),(6,3),(7,1)];
+val test_zip_recycle_3 = zipRecycle([1, 2, 3, 4, 5], [1]) = [(1,1),(2,1),(3,1),(4,1),(5,1)];
+val test_zip_recycle_4 = zipRecycle([1], [1, 2, 3, 4, 5]) = [(1,1),(1,2),(1,3),(1,4),(1,5)];
+val test_zip_recycle_5 = zipRecycle([], [1, 2, 3, 4, 5]) = [];
+val test_zip_recycle_6 = zipRecycle([1, 2, 3, 4, 5], []) = [];

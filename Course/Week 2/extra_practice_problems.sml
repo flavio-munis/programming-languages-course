@@ -179,3 +179,47 @@ fun zip(num_lst1 : int list, num_lst2 : int list) =
 	if null num_lst1 orelse null num_lst2
 	then []
 	else (hd num_lst1, hd num_lst2) :: zip(tl num_lst1, tl num_lst2)
+
+(* 11. ZipRecycle - Does same thing than zip, but recycles the numbers from other list until both lists are empty
+ *
+ * Return Type:
+ * fn : int list * int list -> (int * int) list *)
+fun zipRecycle(num_lst1 : int list, num_lst2 : int list) =
+
+	if null num_lst1 orelse null num_lst2
+	then []
+	else
+		let
+			fun isLst1Bigger(lst1_temp : int list, lst2_temp : int list) =
+
+				if null lst1_temp
+				then false
+				else 
+					if null lst2_temp
+					then true
+					else isLst1Bigger(tl lst1_temp, tl lst2_temp)
+
+			val lst1_bigger = isLst1Bigger(num_lst1, num_lst2)
+		in
+			let
+				fun recycle(lst1_temp : int list, lst2_temp : int list) =
+
+					if lst1_bigger
+					then
+						if null lst1_temp
+						then []
+						else
+							if null lst2_temp
+							then recycle(lst1_temp, num_lst2)
+							else (hd lst1_temp, hd lst2_temp) :: recycle(tl lst1_temp, tl lst2_temp)
+					else
+						if null lst2_temp
+						then []
+						else
+							if null lst1_temp
+							then recycle(num_lst1, lst2_temp)
+							else (hd lst1_temp, hd lst2_temp) :: recycle(tl lst1_temp, tl lst2_temp)
+			in
+				recycle(num_lst1, num_lst2)
+			end
+		end
