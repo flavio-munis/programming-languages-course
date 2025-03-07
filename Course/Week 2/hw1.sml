@@ -177,6 +177,10 @@ fun oldest(dates : (int * int * int) list) =
  *
  * Return Type:
  * fn : int list -> int list*)
+
+(* 
+ * O(n^2) Wort Case Solution
+
 fun remove_duplicates(xs : int list) =
 
 	if null xs
@@ -204,7 +208,52 @@ fun remove_duplicates(xs : int list) =
 		in
 			create_no_duplicate_list(xs, [])
 		end
-			
+*)
+
+(*O(n) Solution*)
+fun remove_duplicates(nums : int list) =
+	if null nums
+	then []
+	else
+		let
+			(* Array of All Months (Array is a Mutable Data Type) *)
+			val bool_arr = Array.fromList([false,false,false,false,false,false,false,false, false,false,false,false])
+
+			(* Helper Function To Convert a Array to a List*)
+			fun array_to_list arr = Array.foldr(op ::) [] arr
+
+			(* Map All Months In Nums Array (1-12) *)
+			(* fn : int list -> 'a option*)
+			fun map_duplicates(nums_aux : int list) =
+				if null nums_aux
+				then NONE
+				else 
+					let
+						val _ = map_duplicates(tl nums_aux)
+					in
+						SOME (Array.update(bool_arr, (hd nums_aux) - 1, true))
+					end
+
+			(* Convert a Bool Map To It's Corresponding Elements*)
+			(* fn : bool list -> int list *)
+			fun get_nums(bool_list : bool list, total_elements : int) = 
+				if total_elements = 12
+				then []
+				else
+					let
+						val ans = get_nums(tl bool_list, total_elements + 1)
+					in
+						if hd bool_list
+						then (total_elements + 1) :: ans
+						else ans
+					end
+
+			(* Apply Function to Array *)
+			val _ = map_duplicates nums
+		in
+			get_nums(array_to_list(bool_arr), 0)
+		end
+
 (* Exercise 12.1 - Given a list of dates and a list of months, returns how many dates on the list are in the given months.
  * 
  * Return Type:
