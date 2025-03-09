@@ -80,3 +80,81 @@ val test_zip_recycle_3 = zipRecycle([1, 2, 3, 4, 5], [1]) = [(1,1),(2,1),(3,1),(
 val test_zip_recycle_4 = zipRecycle([1], [1, 2, 3, 4, 5]) = [(1,1),(1,2),(1,3),(1,4),(1,5)];
 val test_zip_recycle_5 = zipRecycle([], [1, 2, 3, 4, 5]) = [];
 val test_zip_recycle_6 = zipRecycle([1, 2, 3, 4, 5], []) = [];
+
+val test_zip_opt_1 = zipOpt([1,2],[3,4]) = SOME ([(1,3), (2,4)]);
+val test_zip_opt_2 = zipOpt([1,2],[]) = NONE;
+val test_zip_opt_3 = zipOpt([],[3,4]) = NONE;
+val test_zip_opt_4 = zipOpt([1, 2, 3, 4, 5, 6, 7], [1,2,3]) = NONE;
+
+val test_lookup_1 = lookup([("sim", 0), ("nao", 1), ("uhum", 2)], "nao") = SOME 1
+val test_lookup_2 = lookup([], "nao") = NONE
+val test_lookup_3 = lookup([("sim", 0), ("nao", 1), ("uhum", 2)], "com certeza") = NONE
+
+val test_splitup_1 = splitup([~1,0,1,2]) = ([~1], [0,1,2])
+val test_splitup_2 = splitup([]) = ([], [])
+val test_splitup_3 = splitup([~1,2,1,0,~2]) = ([~1,~2], [2,1,0])
+val test_splitup_4 = splitup([2,1,0]) = ([], [2,1,0])
+
+val test_splitAt_1 = splitAt([~15,0,8,2], 7) = ([~15,0,2], [8])
+val test_splitAt_2 = splitAt([], 10) = ([], [])
+val test_splitAt_3 = splitAt([6,~10,5,10,9,2], 5) = ([~10,2], [6,5,10,9])
+
+val test_isSorted_1 = isSorted([]) = true
+val test_isSorted_2 = isSorted([1]) = true
+val test_isSorted_3 = isSorted([1,2]) = true
+val test_isSorted_4 = isSorted([1,2,3,5,~2,5]) = false
+
+val test_isAnySorted_1 = isAnySorted([]) = true
+val test_isAnySorted_2 = isAnySorted([1]) = true
+val test_isAnySorted_3 = isAnySorted([1,2,3]) = true
+val test_isAnySorted_4 = isAnySorted([3,2,1]) = true
+val test_isAnySorted_5 = isAnySorted([1,2,3,~1]) = false
+val test_isAnySorted_6 = isAnySorted([1,2,3,~1,2,3]) = false
+val test_isanysorted_7 = isAnySorted([2,3,2,1]) = false
+
+val test_sortedMerge_1 = sortedMerge([], []) = []
+val test_sortedMerge_2 = sortedMerge([1], []) = [1]
+val test_sortedMerge_3 = sortedMerge([], [1]) = [1]
+val test_sortedMerge_4 = sortedMerge([1], [2]) = [1,2]
+val test_sortedMerge_5 = sortedMerge([1,5,7], [2,3,8]) = [1,2,3,5,7,8]
+val test_sortedMerge_6 = sortedMerge([1,5,7], [2,3]) = [1,2,3,5,7]
+val test_sortedMerge_7 = sortedMerge([1,5], [2,3,8]) = [1,2,3,5,8]
+
+
+val test_qsort_1 = qsort([5,1,543,7,43,987,321])
+val test_qsort_1_res = isSorted(test_qsort_1) = true
+val test_qsort_2 = qsort([])	
+val test_qsort_2_res = isSorted(test_qsort_2)
+val test_qsort_3 = qsort([5])
+val test_qsort_3_res = isSorted(test_qsort_3)
+val test_qsort_4 = qsort([5,1])
+val test_qsort_4_res = isSorted(test_qsort_4)
+val test_qsort_5 = qsort([5,1,543,7])
+val test_qsort_5_res = isSorted(test_qsort_5) = true
+
+val test_divide_1 = divide [] = ([], [])
+val test_divide_2 = divide [1] = ([1], [])
+val test_divide_3 = divide [1,2] = ([1], [2])
+val test_divide_4 = divide [1,2,3] = ([1,3], [2])
+val test_divide_5 = divide [1,2,3,4] = ([1,3], [2,4])
+val test_divide_6 = divide [1,4,2,5,3] = ([1,2,3], [4,5])
+
+val test_fullDivide_1 = fullDivide(2, 40) = (3, 5)
+val test_fullDivide_2 = fullDivide(3, 10) = (0, 10)
+val test_fullDivide_3 = fullDivide(3, 117) = (2, 13)
+
+val test_factorize_1 = factorize 40 = [(2,3),(5,1)]
+val test_factorize_2 = factorize 10 = [(2,1),(5,1)]
+val test_factorize_3 = factorize 117 = [(3,2),(13,1)]
+val test_factorize_4 = factorize 585 = [(3,2),(5,1),(13,1)]
+val test_factorize_5 = factorize 1619352 = [(2,3),(3,5),(7,2),(17,1)]
+
+val test_multiply_1 = multiply [(2,3),(5,1)] = 40
+val test_multiply_2 = multiply [(2,1),(5,1)] = 10
+val test_multiply_3 = multiply [(3,2),(13,1)] = 117
+val test_multiply_4 = multiply [(3,2),(5,1),(13,1)] = 585
+val test_multiply_5 = multiply [(2,3),(3,5),(7,2),(17,1)] = 1619352
+
+val test_all_products_1 = all_products [] = [1]
+val test_all_products_2 = all_products [(2,2),(5,1)] = [1,2,4,5,10,20]
+val test_all_products_3 = all_products [(2,3)] = [1,2,4,8]
