@@ -234,8 +234,8 @@ fun score_challenge (card_list, goal) =
 			else
 				let
 					val (p_i, p_j) = paths
-					val new_p_i = if p_i >= goal then p_i + 1 else p_i + 11
-					val new_p_j = if p_j + 10 + aces < goal then p_j + 11 else p_j + 1
+					val new_p_i = if p_i > goal then p_i + 1 else p_i + 11
+					val new_p_j = if p_j + 10 + aces <= goal then p_j + 11 else p_j + 1
 				in
 					get_best_route (aces - 1, (new_p_i, new_p_j))
 				end

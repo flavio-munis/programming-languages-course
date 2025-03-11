@@ -106,6 +106,26 @@ val test_score_challenge_25 = score_challenge ([(Hearts,Ace),(Hearts,Num 1)], 14
 
 (* Two Aces *)
 val test_score_challenge_2_1 = score_challenge ([(Hearts,Ace),(Hearts,Ace)], 1) = 1;
-val test_score_challenge_2_2 = score_challenge ([(Hearts,Ace),(Hearts,Ace)], 2) = 0;
-val test_score_challenge_2_3 = score_challenge ([(Hearts,Ace),(Hearts,Ace)], 3) = 0;
-val test_score_challenge_2_4 = score_challenge ([(Hearts,Ace),(Hearts,Ace)], 4) = 1;
+val test_score_challenge_2_2 = score_challenge ([(Hearts,Ace),(Spades,Ace)], 2) = 0;
+val test_score_challenge_2_3 = score_challenge ([(Hearts,Ace),(Spades,Ace)], 3) = 1;
+val test_score_challenge_2_4 = score_challenge ([(Hearts,Ace),(Spades,Ace)], 4) = 2;
+val test_score_challenge_2_5 = score_challenge ([(Hearts,Ace),(Spades,Ace)], 5) = 3;
+val test_score_challenge_2_6 = score_challenge ([(Hearts,Ace),(Spades,Ace)], 6) = 4;
+val test_score_challenge_2_7 = score_challenge ([(Hearts,Ace),(Spades,Ace)], 7) = 5;
+val test_score_challenge_2_8 = score_challenge ([(Hearts,Ace),(Spades,Ace)], 8) = 6;
+val test_score_challenge_2_9 = score_challenge ([(Hearts,Ace),(Spades,Ace)], 9) = 7;
+val test_score_challenge_2_10 = score_challenge ([(Hearts,Ace),(Spades,Ace)], 10) = 6;
+val test_score_challenge_2_11 = score_challenge ([(Hearts,Ace),(Spades,Ace)], 11) = 9;
+val test_score_challenge_2_12 = score_challenge ([(Hearts,Ace),(Spades,Ace)], 12) = 0;
+val test_score_challenge_2_13 = score_challenge ([(Hearts,Ace),(Spades,Ace)], 13) = 1;
+val test_score_challenge_2_14 = score_challenge ([(Hearts,Ace),(Spades,Ace)], 14) = 2;
+val test_score_challenge_2_15 = score_challenge ([(Hearts,Ace),(Spades,Ace)], 15) = 3;
+val test_score_challenge_2_16 = score_challenge ([(Hearts,Ace),(Spades,Ace)], 16) = 4;
+val test_score_challenge_2_17 = score_challenge ([(Hearts,Ace),(Spades,Ace)], 17) = 5;
+val test_score_challenge_2_18 = score_challenge ([(Hearts,Ace),(Spades,Ace)], 18) = 6;
+val test_score_challenge_2_19 = score_challenge ([(Hearts,Ace),(Spades,Ace)], 19) = 7;
+val test_score_challenge_2_20 = score_challenge ([(Hearts,Ace),(Spades,Ace)], 20) = 6;
+val test_score_challenge_2_21 = score_challenge ([(Hearts,Ace),(Spades,Ace)], 21) = 3;
+val test_score_challenge_2_22 = score_challenge ([(Hearts,Ace),(Spades,Ace)], 22) = 0;
+val test_score_challenge_2_23 = score_challenge ([(Hearts,Ace),(Spades,Ace)], 23) = 1;
+val test_score_challenge_2_24 = score_challenge ([(Hearts,Ace),(Spades,Ace)], 24) = 2;
