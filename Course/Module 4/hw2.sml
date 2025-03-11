@@ -186,3 +186,74 @@ fun officiate (card_list, move_list, goal) =
 	in
 		run_game (card_list, move_list, [])
 	end
+
+
+(* 3. Challenge Problems *)
+(* score_challenge - Computes the best score where aces can be 1 or 11.
+ * Proof of Correctude:
+ Given a card list with n aces in it, each ace can have a indepentend value of 1 or 11, which results in a binary decision tree with 2^n results of summing the cards.
+ Given a goal, there are two ways to calculate the score, either score > goal, let's call it res_1, or score <= goal, let's call it res_2.
+
+** res_1 = 3*(sum - goal) / res_2 = goal - sum
+
+Given a collection with all the possible results, let's call it S = [s_1, s_2, ..., s_n]. Let's split this collection into to where,
+
+** s_res_1 = s_k | s_k > goal, k ∈ {1,2,...,n}
+** s_res_2 = s_k | s_k <= goal, k ∈ {1,2,...,n}
+
+The best result for a res_1 score is if sum - goal = 1, which results in, 3*(sum-goal) >= 3.
+For a res_2 result, if goal = sum, so, goal - sum = 0, which results in a perfect score.
+
+So, for finding the optimal result we must find the max element in both collections (s_res_1 and s_res_2), so the best possible score is min(max(s_res_1), max(s_res_2)).
+ *
+ * fn : card list, int -> int*)
+fun score_challenge (card_list, goal) =
+	let
+		(* sum_not_aces - Sum all the cards that aren't aces and return it's sum and the number of aces in the list.
+		 *
+		 * Return Type:
+		 * fn : card list, int * int -> int * int *)
+		fun sum_not_aces (card_list, ans) = 
+			case card_list of
+				[] => ans
+			  | c::cs' => 
+				case ans of
+					(sum, aces) =>
+						 case c of
+							 (_, Ace) => sum_not_aces (cs', (sum, aces + 1))
+						   | (_, Num i) => sum_not_aces (cs', (sum + i, aces)) 
+						   | _ =>  sum_not_aces (cs', (sum + 10, aces))
+
+		(* get_best_routw - Get the 2 best paths, p_i the min element in the set p_k - goal > 1. And p_j, the max element in the set goal - p_k = 0.
+		 *
+		 * Return Type:
+		 * fn : int, int, int * int -> int * int *)
+		fun get_best_route (aces, paths) =
+			if aces = 0
+			then paths
+			else
+				let
+					val (p_i, p_j) = paths
+					val new_p_i = if p_i >= goal then p_i + 1 else p_i + 11
+					val new_p_j = if p_j + 10 + aces < goal then p_j + 11 else p_j + 1
+				in
+					get_best_route (aces - 1, (new_p_i, new_p_j))
+				end
+
+		fun best_score (p_i, p_j) = 
+			if p_i < goal
+			then goal - p_j
+			else Int.min(3*(p_i - goal), goal - p_j)
+
+		val (sum, aces) = sum_not_aces (card_list, (0,0))
+		val best_score = if sum >= goal orelse sum + aces > goal
+						 then 3*((sum + aces) - goal)
+						 else 
+							 if goal > sum + 11*aces
+							 then goal - (sum + 11*aces)
+							 else best_score (get_best_route (aces, (sum, sum)))
+	in
+		if all_same_color card_list
+		then best_score div 2
+		else best_score
+	end
