@@ -224,36 +224,30 @@ fun score_challenge (card_list, goal) =
 						   | (_, Num i) => sum_not_aces (cs', (sum + i, aces)) 
 						   | _ =>  sum_not_aces (cs', (sum + 10, aces))
 
-		(* get_best_routw - Get the 2 best paths, p_i the min element in the set p_k - goal > 1. And p_j, the max element in the set goal - p_k = 0.
-		 *
-		 * Return Type:
-		 * fn : int, int, int * int -> int * int *)
-		fun get_best_route (aces, paths) =
-			if aces = 0
-			then paths
-			else
-				let
-					val (p_i, p_j) = paths
-					val new_p_i = if p_i > goal then p_i + 1 else p_i + 11
-					val new_p_j = if p_j + 10 + aces <= goal then p_j + 11 else p_j + 1
-				in
-					get_best_route (aces - 1, (new_p_i, new_p_j))
-				end
+		fun min_score (sum_aux) =
+			let
+				val prev_res = (goal - sum_aux) mod 10
+			in
+				if prev_res > 7
+				then 3*((sum_aux - goal) mod 10)
+				else prev_res
+			end
+			
 
-		fun best_score (p_i, p_j) = 
-			if p_i < goal
-			then goal - p_j
-			else Int.min(3*(p_i - goal), goal - p_j)
-
-		val (sum, aces) = sum_not_aces (card_list, (0,0))
-		val best_score = if sum >= goal orelse sum + aces > goal
-						 then 3*((sum + aces) - goal)
-						 else 
-							 if goal > sum + 11*aces
-							 then goal - (sum + 11*aces)
-							 else best_score (get_best_route (aces, (sum, sum)))
+		fun best_score (sum, aces) =
+			if sum >= goal orelse sum + aces > goal
+			then 3*((sum + aces) - goal)
+			else 
+				if sum + aces = goal
+				then 0
+				else
+					if goal > sum + 11*aces
+					then goal - (sum + 11*aces)
+					else min_score (sum + aces)
+		
+		val score = best_score (sum_not_aces (card_list, (0,0)))
 	in
 		if all_same_color card_list
-		then best_score div 2
-		else best_score
+		then score div 2
+		else score
 	end
