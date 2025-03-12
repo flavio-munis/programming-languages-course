@@ -189,22 +189,8 @@ fun officiate (card_list, move_list, goal) =
 
 
 (* 3. Challenge Problems *)
-(* score_challenge - Computes the best score where aces can be 1 or 11.
- * Proof of Correctude:
- Given a card list with n aces in it, each ace can have a indepentend value of 1 or 11, which results in a binary decision tree with 2^n results of summing the cards.
- Given a goal, there are two ways to calculate the score, either score > goal, let's call it res_1, or score <= goal, let's call it res_2.
-
-** res_1 = 3*(sum - goal) / res_2 = goal - sum
-
-Given a collection with all the possible results, let's call it S = [s_1, s_2, ..., s_n]. Let's split this collection into to where,
-
-** s_res_1 = s_k | s_k > goal, k ∈ {1,2,...,n}
-** s_res_2 = s_k | s_k <= goal, k ∈ {1,2,...,n}
-
-The best result for a res_1 score is if sum - goal = 1, which results in, 3*(sum-goal) >= 3.
-For a res_2 result, if goal = sum, so, goal - sum = 0, which results in a perfect score.
-
-So, for finding the optimal result we must find the max element in both collections (s_res_1 and s_res_2), so the best possible score is min(max(s_res_1), max(s_res_2)).
+(* score_challenge - Computes the best score where aces can be 1 or 11. (Proof in Repo)
+ * Runtime: O(n)
  *
  * fn : card list, int -> int*)
 fun score_challenge (card_list, goal) =
@@ -224,6 +210,10 @@ fun score_challenge (card_list, goal) =
 						   | (_, Num i) => sum_not_aces (cs', (sum + i, aces)) 
 						   | _ =>  sum_not_aces (cs', (sum + 10, aces))
 
+		(* min_score - Return the minimun possible score for case n + 3 < goal < sum + 11*ace.
+		 *
+		 * Return Type:
+		 * fn : int -> int *)
 		fun min_score (sum_aux) =
 			let
 				val prev_res = (goal - sum_aux) mod 10
@@ -232,8 +222,11 @@ fun score_challenge (card_list, goal) =
 				then 3*((sum_aux - goal) mod 10)
 				else prev_res
 			end
-			
 
+		(* best_score - Check all cases and return the best possible score.
+		 *
+		 * Return Type:
+		 * fn : int, int -> int *)
 		fun best_score (sum, aces) =
 			if sum >= goal orelse sum + aces > goal
 			then 3*((sum + aces) - goal)
@@ -250,4 +243,53 @@ fun score_challenge (card_list, goal) =
 		if all_same_color card_list
 		then score div 2
 		else score
+	end
+
+
+(* sum_cards_challenge - Return the minimun sum possible (ace = 1).
+ *
+ * Return Type:
+ * fn : card list -> int*)
+fun sum_cards_challenge card_list =
+	let 
+	
+		(* card_value_challenge - Returns the value of a given card. (Num i -> i, Ace -> 1, _ -> 10).
+		 *
+		 * Return Type:
+		 * fn : card -> int*)
+		fun card_value_challenge (_, Ace) = 1
+		  | card_value_challenge (_, Num i) = i
+		  | card_value_challenge _ = 10
+
+		fun aux (card_list, acc) =
+			case card_list of
+				[] => acc
+			  | c::xs' => aux (xs', acc+ (card_value_challenge c))
+	in
+		aux (card_list, 0)
+	end
+
+
+(* officiate_challenge - Same as officiate but aces can be 1 or 11, return the minimun score.
+ *
+ * Return Type:
+ * fn : card list, move list, int -> int*)
+fun officiate_challenge (card_list, move_list, goal) =
+	let
+		fun run_game (card_list, move_list, held_cards) =
+			case move_list of
+				[] => score_challenge (held_cards, goal)
+			  | m::ms' => 
+				case m of
+					Draw => (
+					case card_list of
+						[] => score_challenge (held_cards, goal)
+					  | c::cs' => if sum_cards_challenge (c::held_cards) > goal
+								  then score_challenge (c::held_cards, goal)
+								  else run_game (cs', ms',c::held_cards))
+					| Discard c => run_game(card_list,
+											ms',
+											remove_card (card_list, c, IllegalMove))
+	in
+		run_game (card_list, move_list, [])
 	end
