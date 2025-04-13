@@ -139,6 +139,8 @@ fun count_some_var (s, p) = g (fn _ => 0) (fn x => if x = s then 1 else 0) p
 
 (* check_pat - Returns if all variables in p are unique.
  *
+ * (Uses mutable references for efficiency.)
+ *
  * Return Types:
  * fn : pattern -> bool *)
 fun check_pat pattern =
@@ -165,6 +167,7 @@ fun check_pat pattern =
 	in
 		pat pattern
 	end
+
 
 
 (* match - Retuns SOME list of bidings (string * valu), or NONE if there's no valid bindings.
@@ -208,5 +211,10 @@ datatype typ = Anything
 	     | TupleT of typ list
 	     | Datatype of string
 
-(**** you can put all your code here ****)
 
+(* typecheck_patterns - Type-checks a pattern list for a common type between all, returns the "most general" type for all patterns, if it exists.
+ *
+ * Return Types:
+ * fn : ((string * string * typ) list) * (pattern list) -> typ option *)
+fun typecheck_patterns (ts, ps) = SOME Anything
+		
